@@ -20,9 +20,11 @@ export default function CodeSharedEditor({ sharedCode }: { sharedCode: PropsCode
   const handleShare = async () => {
     const data = await ShareCode({ code , language, mode })
     // console.log(data)
-    const baseUrl = window.location.origin; 
-    const sharedUrl = `${baseUrl}/code-sharing/${language}/${data.id}`
-    navigator.share({ url: sharedUrl })
+    if(typeof window !== 'undefined'){
+      const baseUrl = window.location.origin; 
+      const sharedUrl = `${baseUrl}/code-sharing/${language}/${data.id}`
+      navigator.share({ url: sharedUrl })
+    }
     
     setlink('...'+'/' + data.id.substring(0, 10))
     setisButtonDisabled(!isButtonDisabled)
@@ -79,7 +81,7 @@ export default function CodeSharedEditor({ sharedCode }: { sharedCode: PropsCode
           </select>
           <div className="flex justify-end w-full gap-4 items-center">
             {link && <div className="flex p-2">
-              <Image src={Link} alt="link" className='cursor-pointer hover:bg-[#dde1e6] rounded-lg ' onClick={() => navigator.clipboard.writeText(window.location.origin + '/code-sharing/' + language + '/' + link)} title="copy link"/>
+              <Image src={Link} alt="link" className='cursor-pointer hover:bg-[#dde1e6] rounded-lg ' onClick={() => navigator.clipboard.writeText(typeof window !== "undefined" ? window.location.origin + '/code-sharing/' + language + '/' + link: '')} title="copy link"/>
               <h1 className={`${mode === 'light' ? 'text-[#1e1e1e]' : 'text-white'}`}>{link}</h1>
             </div>}
             <button className={`w-24 h-10 ${isButtonDisabled === true ? 'bg-[#CED6E1]' : 'bg-[#406AFF] cursor-pointer'}  text-white rounded-full shadow-sm focus:outline-none flex justify-center items-center gap-2 p-2 `} onClick={handleShare} disabled={isButtonDisabled}><Image src={Share} alt="share" />Share</button>

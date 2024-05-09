@@ -15,7 +15,10 @@ export default function EditorLayout() {
   const [code, setcode] = useState(defaultHtmlCode)
   const [isButtonDisabled, setisButtonDisabled] = useState(false)
   const [link, setlink] = useState('')
-  const baseUrl = window.location.origin; 
+  let baseUrl = ''
+  if(typeof window !== 'undefined'){
+    baseUrl = window.location.origin;  
+  }
 
   const handleShare = async () => {
     const data = await ShareCode({ code, language, mode })
